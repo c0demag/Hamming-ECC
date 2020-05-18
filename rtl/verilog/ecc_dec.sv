@@ -185,9 +185,12 @@ begin
     //information bits are stored in non-power-of-2 locations
 
     bit_idx=0; //information bit vector index
-    for (cw_idx=1; cw_idx<=n; cw_idx++) //codeword index
-      if (2**$clog2(cw_idx) != cw_idx)
-        extract_q[bit_idx++] = cw[cw_idx];
+    for (cw_idx=1; cw_idx<=n; cw_idx++) begin //codeword index
+      if (2**$clog2(cw_idx) != cw_idx) begin
+        extract_q[bit_idx] = cw[cw_idx];
+        bit_idx += 1;
+      end
+    end
 end
 endfunction //extract_q
 
@@ -208,7 +211,9 @@ begin
     tmp = 0;
     for (i=1; i<n; i++)
     begin
+       /* verilator lint_off WIDTH */
        if ( (i == syndrome) && (i != 2**$clog2(i-1)) ) tmp[i] = 1'b1;
+       /* verilator lint_on WIDTH */
     end
 
     //then check result

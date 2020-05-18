@@ -138,9 +138,12 @@ begin
     store_dbits_in_codeword = 0;
 
     bit_idx=0; //information vector bit index
-    for (cw_idx=1; cw_idx<=n; cw_idx++)
-      if (2**$clog2(cw_idx) != cw_idx)
-        store_dbits_in_codeword[cw_idx] = d[bit_idx++];
+    for (cw_idx=1; cw_idx<=n; cw_idx++) begin
+      if (2**$clog2(cw_idx) != cw_idx) begin
+        store_dbits_in_codeword[cw_idx] = d[bit_idx];
+        bit_idx += 1;
+      end
+    end
 end
 endfunction //store_dbits_in_codeword
 
